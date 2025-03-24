@@ -52,6 +52,26 @@ export class GameScene extends Phaser.Scene {
             },
             // More platform types can be added here in future steps
         };
+        
+        // Create the player character
+        const playerWidth = 50;
+        const playerHeight = 70;
+        const playerColor = 0x4287f5; // Blue color
+        
+        // Add a rectangular sprite for the player at position (200, 550)
+        this.player = this.add.rectangle(200, 550, playerWidth, playerHeight, playerColor);
+        
+        // Enable Arcade Physics for the player sprite
+        this.physics.add.existing(this.player);
+        
+        // Set the player's bounce property for the y-axis to 0 (jumping will be handled manually)
+        this.player.body.setBounce(0, 0);
+        
+        // Create a sfx object to hold sound effect references for future implementation
+        this.sfx = {
+            // Jump sound will be added in future steps
+            // jump: this.sound.add('jump')
+        };
     }
 
     update() {

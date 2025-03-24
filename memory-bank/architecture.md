@@ -63,6 +63,15 @@ Phaser's scene system is used to organize the game into distinct states:
    - Implements procedural platform generation
    - Handles scoring system and game over condition
    - Controls camera following behavior
+   - Platform management:
+     - Creates and maintains the platform physics group
+     - Handles platform positioning and spacing
+     - Defines different platform types and behaviors
+   - Player management:
+     - Creates and maintains the player character
+     - Handles physics-based player movement
+     - Manages player-platform interactions
+     - Controls sound effects related to player actions
 
 3. **GameOverScene (GameOverScene.js)**
    - Shows game over message and final score
@@ -76,6 +85,25 @@ Phaser's scene system is used to organize the game into distinct states:
 - Maintains clean separation of concerns between files
 - Requires a local development server due to browser security restrictions
 
+### Player System
+- Creates the player as a physics-enabled rectangle object
+- Uses standard dimensions (50x70 pixels) for consistent collision detection
+- Implements physics properties for realistic movement and gravity effects
+- Designed to be controlled via keyboard and touch input
+- Prepares sound effect handling for player actions
+- Positioned to properly interact with platform objects
+- Serves as the focal point for camera tracking and game logic
+
+### Platform System
+- Creates platforms as physics-enabled rectangle objects
+- Uses Phaser's static physics group for efficient collision handling
+- Implements platform type definitions for different behaviors:
+  - Standard platforms (static, green)
+  - Moving platforms (horizontal movement, blue) - prepared for future implementation
+  - Breakable platforms (single-use, orange) - prepared for future implementation
+- Uses consistent dimensions (80x15 pixels) and vertical spacing (80-150 pixels)
+- Randomizes horizontal positions for varied gameplay
+
 ### Rendering System
 - Configures WebGL for optimal rendering performance
 - Manages memory usage through proper texture settings
@@ -85,11 +113,14 @@ Phaser's scene system is used to organize the game into distinct states:
 - Configured to comply with modern browser autoplay policies
 - Uses event listeners to resume audio context after user interaction
 - Ensures sound effects will work properly during gameplay
+- Organizes sound effects in a centralized sfx object for easy reference
 
 ### Physics System
 - Uses Phaser's Arcade Physics for game mechanics
 - Implements one-way platform collisions (player can jump through from below)
 - Controls player movement with physics properties
+- Utilizes static physics groups for non-moving objects like standard platforms
+- Handles bounce properties and gravity effects for realistic gameplay
 
 ### Asset Management
 - Preloads all game assets in the appropriate scene preload methods

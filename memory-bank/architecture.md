@@ -80,6 +80,10 @@ Phaser's scene system is used to organize the game into distinct states:
      - Manages player-platform interactions with custom collision logic
      - Enforces one-way platform collision rules
      - Triggers automatic jumping when valid collisions occur
+   - Screen management:
+     - Implements horizontal screen wrap-around for the player
+     - Creates a seamless horizontal playing area without borders
+     - Maintains proper game state during edge transitions
 
 3. **GameOverScene (GameOverScene.js)**
    - Shows game over message and final score
@@ -103,6 +107,16 @@ Phaser's scene system is used to organize the game into distinct states:
 - Serves as the focal point for camera tracking and game logic
 - Uses velocity-based movement for smooth control response
 - Implements automatic jumping mechanics with velocity manipulation
+- Utilizes position-based screen wrap-around for infinite horizontal movement
+
+### World Boundary System
+- Implements a toroidal world space for horizontal movement (wrap-around)
+- Creates an infinite horizontal playing area by teleporting the player across screen edges
+- Uses game configuration dimensions to determine boundary positions
+- Checks player position against boundaries in each update cycle
+- Maintains gameplay continuity by preserving vertical position and velocity during wrap-around
+- Enhances gameplay by eliminating horizontal boundaries and constraints
+- Gives the player freedom to move continuously in any horizontal direction
 
 ### Platform System
 - Creates platforms as physics-enabled rectangle objects
@@ -148,6 +162,7 @@ Phaser's scene system is used to organize the game into distinct states:
 - Handles bounce properties and gravity effects for realistic gameplay
 - Manages velocity changes for player jumping mechanics
 - Provides the foundation for core gameplay feel and responsiveness
+- Maintains physics state during screen wrap transitions
 
 ### Input Handling System
 - Implements a cross-platform control scheme supporting multiple input methods:

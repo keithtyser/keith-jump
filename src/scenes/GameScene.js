@@ -144,5 +144,18 @@ export class GameScene extends Phaser.Scene {
         
         // Apply velocity based on direction
         this.player.body.setVelocityX(moveDirection * 300);
+        
+        // Implement screen wrap-around
+        const gameWidth = this.sys.game.config.width;
+        
+        // If player moves off the left edge, wrap to the right edge
+        if (this.player.x < 0) {
+            this.player.x = gameWidth;
+        }
+        
+        // If player moves off the right edge, wrap to the left edge
+        else if (this.player.x > gameWidth) {
+            this.player.x = 0;
+        }
     }
 } 

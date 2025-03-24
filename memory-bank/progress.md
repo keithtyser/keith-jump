@@ -56,8 +56,22 @@
   - Added commented code for future jump sound implementation
 - Successfully tested that the player appears on screen and falls due to gravity
 
+## Step 5: Implement Player Horizontal Movement (Completed)
+- Implemented player movement controls in GameScene.js:
+  - Set up keyboard input using Phaser's input manager for arrow keys
+  - Added support for alternative A/D keys for movement
+  - Implemented touch/mobile input support:
+    - Added event listeners for pointer down, move, and up events
+    - Created touch tracking variables to monitor user interaction
+    - Determined left/right movement based on touch position relative to screen center
+  - Added movement logic in the update method:
+    - Implemented a movement direction system (-1 for left, 0 for none, 1 for right)
+    - Set the player's horizontal velocity to 300 pixels per second based on direction
+    - Ensured movement stops when no input is detected
+- Successfully tested that the player moves left and right with keyboard and touch controls
+
 ## Next Steps
-- Step 5: Implement Player Horizontal Movement (Pending)
-  - Set up keyboard input
-  - Add touch/mobile control support
-  - Implement movement in update method
+- Step 6: Implement Automatic Jumping on Platforms (Pending)
+  - Add physics collider between player and platforms
+  - Configure one-way collision (from top only)
+  - Implement automatic jumping on collision

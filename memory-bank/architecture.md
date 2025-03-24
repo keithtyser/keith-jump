@@ -72,6 +72,10 @@ Phaser's scene system is used to organize the game into distinct states:
      - Handles physics-based player movement
      - Manages player-platform interactions
      - Controls sound effects related to player actions
+   - Input handling:
+     - Processes keyboard input (arrow keys and WASD)
+     - Manages touch/pointer events for mobile devices
+     - Converts input events to player movement commands
 
 3. **GameOverScene (GameOverScene.js)**
    - Shows game over message and final score
@@ -93,6 +97,7 @@ Phaser's scene system is used to organize the game into distinct states:
 - Prepares sound effect handling for player actions
 - Positioned to properly interact with platform objects
 - Serves as the focal point for camera tracking and game logic
+- Uses velocity-based movement for smooth control response
 
 ### Platform System
 - Creates platforms as physics-enabled rectangle objects
@@ -122,14 +127,23 @@ Phaser's scene system is used to organize the game into distinct states:
 - Utilizes static physics groups for non-moving objects like standard platforms
 - Handles bounce properties and gravity effects for realistic gameplay
 
+### Input Handling System
+- Implements a cross-platform control scheme supporting multiple input methods:
+  - Keyboard controls using arrow keys for primary movement
+  - Alternative WASD/AD keys for keyboard movement
+  - Touch/pointer controls for mobile devices
+- Uses Phaser's input manager to create and track key objects
+- Implements touch detection with screen-side based directional control:
+  - Left side of screen moves player left
+  - Right side of screen moves player right
+- Manages touch state through pointer events (down, up, move)
+- Implements an abstracted movement direction system that works across input types
+- Translates input events into physics velocities in the game update loop
+- Designed for responsive controls that feel consistent across devices
+
 ### Asset Management
 - Preloads all game assets in the appropriate scene preload methods
 - Uses asset directories for organization
-
-### Input Handling
-- Supports both keyboard and touch controls
-- Optimized for mobile play with responsive scaling
-- Handles input events to properly manage audio context
 
 ### Storage
 - Uses localStorage for high score persistence between sessions

@@ -70,8 +70,23 @@
     - Ensured movement stops when no input is detected
 - Successfully tested that the player moves left and right with keyboard and touch controls
 
+## Step 6: Implement Automatic Jumping on Platforms (Completed)
+- Implemented platform collision and jumping mechanics:
+  - Added a physics collider between the player and platforms
+  - Created a collision check function (checkPlatformCollision) that enforces one-way collision:
+    - Only allows collisions when player is falling down (positive y velocity)
+    - Only registers collision when player's bottom is above platform's top
+    - Prevents collision when jumping up through platforms
+  - Implemented a collision handler function (handlePlatformCollision) that:
+    - Sets player's y-velocity to -800 to create the jumping effect
+    - Added placeholder for jump sound effect
+  - Created a complete jumping cycle where the player:
+    - Falls due to gravity
+    - Bounces upward upon landing on platforms
+    - Can pass through platforms from below
+- Successfully tested that player automatically jumps when landing on platforms
+
 ## Next Steps
-- Step 6: Implement Automatic Jumping on Platforms (Pending)
-  - Add physics collider between player and platforms
-  - Configure one-way collision (from top only)
-  - Implement automatic jumping on collision
+- Step 7: Implement Screen Wrap-Around (Pending)
+  - Add horizontal screen wrap-around for player movement
+  - Set player position when moving off screen edges

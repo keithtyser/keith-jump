@@ -99,6 +99,24 @@ export class GameScene extends Phaser.Scene {
         // Initialize touch tracking variables
         this.touchActive = false;
         this.touchX = 0;
+        
+        // Add a physics collider between player and platforms
+        this.physics.add.collider(this.player, this.platforms, this.handlePlatformCollision, this.checkPlatformCollision, this);
+    }
+    
+    // Check if the player should collide with the platform (one-way collision)
+    checkPlatformCollision(player, platform) {
+        // Only allow collision if player is falling down and its bottom is above the platform's top
+        return player.body.velocity.y > 0 && player.body.bottom <= platform.body.top + 5;
+    }
+    
+    // Handle what happens when the player collides with a platform
+    handlePlatformCollision(player, platform) {
+        // Set the player's upward velocity for the jump
+        player.body.setVelocityY(-800);
+        
+        // Play the jump sound effect (when implemented)
+        // this.sfx.jump.play();
     }
 
     update() {

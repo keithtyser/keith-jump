@@ -15,35 +15,11 @@ export class GameScene extends Phaser.Scene {
         this.platforms = this.physics.add.staticGroup();
         
         // Define platform dimensions
-        const platformWidth = 80;
-        const platformHeight = 15;
-        const platformColor = 0x6BBA75; // Green color
+        this.platformWidth = 80;
+        this.platformHeight = 15;
+        this.platformColor = 0x6BBA75; // Green color
         
-        // Create 7 platforms at fixed positions with random x-coordinates
-        let yPosition = 550; // Start from bottom
-        let firstPlatformY = yPosition; // Store position of first platform
-        let firstPlatformX = 200; // Default center position
-        
-        for (let i = 0; i < 7; i++) {
-            // Random x-coordinate (40 to 360) to stay within screen width
-            const xPosition = Phaser.Math.Between(40, 360);
-            
-            // Store the position of the first platform for player positioning
-            if (i === 0) {
-                firstPlatformX = xPosition;
-            }
-            
-            // Create platform as a rectangle
-            const platform = this.add.rectangle(xPosition, yPosition, platformWidth, platformHeight, platformColor);
-            
-            // Add the platform to the physics group
-            this.platforms.add(platform);
-            
-            // Set the next platform y-position (80-150 pixels higher)
-            yPosition -= Phaser.Math.Between(80, 150);
-        }
-        
-        // Define platform types for future implementation
+        // Define platform types for implementation
         this.platformTypes = {
             standard: {
                 color: 0x6BBA75,
@@ -59,6 +35,33 @@ export class GameScene extends Phaser.Scene {
             },
             // More platform types can be added here in future steps
         };
+        
+        // Create 7 platforms at fixed positions with random x-coordinates
+        let yPosition = 550; // Start from bottom
+        let firstPlatformY = yPosition; // Store position of first platform
+        let firstPlatformX = 200; // Default center position
+        
+        // Track highest platform for dynamic generation
+        this.highestPlatformY = yPosition;
+        
+        for (let i = 0; i < 7; i++) {
+            // Random x-coordinate (40 to 360) to stay within screen width
+            const xPosition = Phaser.Math.Between(40, 360);
+            
+            // Store the position of the first platform for player positioning
+            if (i === 0) {
+                firstPlatformX = xPosition;
+            }
+            
+            // Create platform as a rectangle
+            const platform = this.createPlatform(xPosition, yPosition, 'standard');
+            
+            // Set the next platform y-position (80-150 pixels higher)
+            yPosition -= Phaser.Math.Between(80, 150);
+            
+            // Update the highest platform position
+            this.highestPlatformY = Math.min(this.highestPlatformY, yPosition);
+        }
         
         // Create the player character
         const playerWidth = 50;
@@ -123,6 +126,29 @@ export class GameScene extends Phaser.Scene {
         // Set the deadzone - an area where the camera won't scroll
         // This keeps the player within view but not necessarily centered
         this.cameras.main.setDeadzone(gameWidth, 200);
+        
+        // Initialize game height variable
+        this.gameHeight = this.sys.game.config.height;
+    }
+    
+    // Creates a platform at the specified position with the specified type
+    createPlatform(x, y, type = 'standard') {
+        // Get platform color from platformTypes, default to standard if type not found
+        const platformColor = this.platformTypes[type]?.color || this.platformTypes.standard.color;
+        
+        // Create platform as a rectangle
+        const platform = this.add.rectangle(x, y, this.platformWidth, this.platformHeight, platformColor);
+        
+        // Add the platform to the physics group
+        this.platforms.add(platform);
+        
+        // Store the platform type for future behavior implementation
+        platform.platformType = type;
+        
+        // Update the highest platform position if this is higher
+        this.highestPlatformY = Math.min(this.highestPlatformY, y);
+        
+        return platform;
     }
     
     // Check if the player should collide with the platform (one-way collision)
@@ -178,5 +204,59 @@ export class GameScene extends Phaser.Scene {
         else if (this.player.x > gameWidth) {
             this.player.x = 0;
         }
+        
+        // Dynamic platform generation
+        // Check if player has reached the upper threshold (40% of screen height from top)
+        if (this.player.y < this.cameras.main.scrollY + (this.gameHeight * 0.4)) {
+            // Generate a new platform above the highest existing one
+            const newPlatformY = this.highestPlatformY - Phaser.Math.Between(80, 150);
+            const newPlatformX = Phaser.Math.Between(40, 360);
+            
+            // Determine platform type (mostly standard for now)
+            let platformType = 'standard';
+            const randomValue = Math.random();
+            if (randomValue > 0.9) {
+                platformType = 'moving';
+            } else if (randomValue > 0.8) {
+                platformType = 'breakable';
+            }
+            
+            // Create the new platform
+            this.createPlatform(newPlatformX, newPlatformY, platformType);
+        }
+        
+        // Recycle platforms that are below the view
+        this.platforms.getChildren().forEach(platform => {
+            if (platform.y > this.cameras.main.scrollY + this.gameHeight) {
+                // Move this platform to above the highest platform (object pooling)
+                const newY = this.highestPlatformY - Phaser.Math.Between(80, 150);
+                const newX = Phaser.Math.Between(40, 360);
+                
+                // Reset the platform position
+                platform.x = newX;
+                platform.y = newY;
+                
+                // Update the body position (required for physics)
+                platform.body.updateFromGameObject();
+                
+                // Determine platform type for recycled platform (mostly standard for now)
+                let platformType = 'standard';
+                const randomValue = Math.random();
+                if (randomValue > 0.9) {
+                    platformType = 'moving';
+                } else if (randomValue > 0.8) {
+                    platformType = 'breakable';
+                }
+                
+                // Update platform color based on type
+                platform.fillColor = this.platformTypes[platformType].color;
+                
+                // Store the platform type for future behavior implementation
+                platform.platformType = platformType;
+                
+                // Update the highest platform position
+                this.highestPlatformY = Math.min(this.highestPlatformY, newY);
+            }
+        });
     }
 } 

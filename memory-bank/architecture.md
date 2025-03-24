@@ -53,9 +53,21 @@ keith-jump/
 Phaser's scene system is used to organize the game into distinct states:
 
 1. **StartScene (StartScene.js)**
-   - Displays the game title and start button
-   - Shows high score from localStorage
-   - Transitions to GameScene when the player starts
+   - Serves as the entry point and first screen of the game
+   - Displays the game title "KEITH JUMP" with prominent text
+   - Shows the current high score retrieved from localStorage
+   - Provides brief instructions for game controls
+   - Contains a prominent START GAME button for game initiation
+   - Manages touch/click input for the start button
+   - Uses Phaser's pointer events for interactive elements
+   - Implements localStorage integration for high score retrieval
+   - Designed with a clear visual hierarchy and centered UI elements
+   - Prepares for future visual and audio asset integration
+   - Handles the first scene transition to GameScene when play begins
+   - Uses responsive positioning based on camera dimensions:
+     - Centers content using screen dimensions and setOrigin
+     - Uses relative positioning for different screen sizes
+   - Establishes the starting state for all game sessions
 
 2. **GameScene (GameScene.js)**
    - Contains core gameplay logic

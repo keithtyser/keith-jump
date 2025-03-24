@@ -11,7 +11,7 @@ const config = {
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 120 },
+            gravity: { y: 150 },
             debug: false
         }
     },
@@ -19,7 +19,17 @@ const config = {
     scale: {
         mode: Phaser.Scale.FIT,
         parent: 'game',
-        autoCenter: Phaser.Scale.CENTER_BOTH
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        width: 400,
+        height: 600,
+        min: {
+            width: 320,
+            height: 480
+        },
+        max: {
+            width: 800,
+            height: 1200
+        }
     },
     audio: {
         disableWebAudio: false,

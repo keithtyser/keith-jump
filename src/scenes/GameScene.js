@@ -11,6 +11,9 @@ export class GameScene extends Phaser.Scene {
     }
 
     create() {
+        // Set background color to light blue
+        this.cameras.main.setBackgroundColor('#87CEEB');
+        
         // Create a static group for platforms
         this.platforms = this.physics.add.staticGroup();
         
@@ -182,7 +185,7 @@ export class GameScene extends Phaser.Scene {
     // Handle what happens when the player collides with a platform
     handlePlatformCollision(player, platform) {
         // Set the player's upward velocity for the jump
-        player.body.setVelocityY(-800);
+        player.body.setVelocityY(-850);
         
         // Play the jump sound effect (when implemented)
         // this.sfx.jump.play();
@@ -212,7 +215,7 @@ export class GameScene extends Phaser.Scene {
         }
         
         // Apply velocity based on direction
-        this.player.body.setVelocityX(moveDirection * 300);
+        this.player.body.setVelocityX(moveDirection * 350);
         
         // Implement screen wrap-around
         const gameWidth = this.sys.game.config.width;

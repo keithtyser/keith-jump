@@ -100,23 +100,38 @@ Phaser's scene system is used to organize the game into distinct states:
 3. **GameOverScene (GameOverScene.js)**
    - Shows game over message and final score
    - Displays and updates high score
-   - Provides restart button to begin a new game
+   - Provides multiple navigation options:
+     - PLAY AGAIN button to restart the game immediately
+     - MAIN MENU button to return to the StartScene
    - Implements data receiving from GameScene:
      - Uses Phaser's scene.init method to receive game state data
      - Receives score and high score from the GameScene
-   - Maintains visual consistency with the main game
-   - Creates a user-friendly game over experience:
-     - Provides clear feedback about the game result
-     - Shows both current score and high score for player assessment
-     - Offers an easy method to restart gameplay
-   - Uses event-based button interaction:
-     - Implements interactive properties for the restart button
-     - Handles pointer events to trigger scene transitions
-     - Prepared for future sound effect implementation
-   - Serves as a buffer between game sessions:
+   - Maintains visual consistency with the main game with styled UI:
+     - Custom dark blue background (#1A1A2E)
+     - Red GAME OVER header with shadow effects
+     - Properly contrasted text elements
+   - Creates an enhanced user experience:
+     - Container-based organization for grouped animations
+     - Animated score counter that ticks up to the final score
+     - Special "NEW RECORD" notification with pulsing animation when high score is achieved
+     - Entry animation with bounce effect for all UI elements
+   - Implements responsive interactive elements:
+     - Button containers with hover and click effects
+     - Color changes on hover to indicate interactivity
+     - Scale animations for button feedback
+     - Proper hand cursor for interactive elements
+   - Uses advanced Phaser features:
+     - Tween animations for visual effects
+     - Time events for score counting animation
+     - Container transforms for grouped elements
+     - Relative positioning based on screen dimensions
+   - Prepares for future asset integration:
+     - Placeholders for sound effects (click, game over)
+     - Structure ready for image asset replacement
+   - Serves as a polished end-game experience:
      - Prevents immediate game restart on failure
-     - Gives players time to reflect on their score
-     - Provides an explicit action (button click) to continue
+     - Gives players time to appreciate their score
+     - Provides multiple navigation options for continuing gameplay
 
 ## Technical Architecture
 

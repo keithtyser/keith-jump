@@ -1,5 +1,53 @@
 // Main configuration file for Keith Jump game
-// This file will be expanded in Step 2 with full Phaser game configuration
+import { GameScene } from './scenes/GameScene.js';
 
-// Empty placeholder for now - this is just to verify the script loading works
-console.log('Main.js loaded successfully'); 
+// Game configuration
+const config = {
+    type: Phaser.AUTO,
+    width: 400,
+    height: 600,
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 120 },
+            debug: false
+        }
+    },
+    scene: [GameScene],
+    scale: {
+        mode: Phaser.Scale.FIT,
+        parent: 'game',
+        autoCenter: Phaser.Scale.CENTER_BOTH
+    },
+    audio: {
+        disableWebAudio: false,
+        noAudio: false
+    },
+    render: {
+        pixelArt: false,
+        antialias: true,
+        roundPixels: false,
+        transparent: false,
+        clearBeforeRender: true,
+        premultipliedAlpha: true,
+        preserveDrawingBuffer: false,
+        failIfMajorPerformanceCaveat: false,
+        powerPreference: 'default'
+    }
+};
+
+// Initialize the game
+const game = new Phaser.Game(config);
+
+// Setup audio to be resumed on first user interaction
+document.addEventListener('click', function() {
+    if (game.sound.context.state === 'suspended') {
+        game.sound.context.resume();
+    }
+}, false);
+
+document.addEventListener('keydown', function() {
+    if (game.sound.context.state === 'suspended') {
+        game.sound.context.resume();
+    }
+}, false); 

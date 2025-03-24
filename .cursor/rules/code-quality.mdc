@@ -1,0 +1,11 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Adhere to consistent naming conventions (e.g., camelCase for variables, PascalCase for classes) and maintain a uniform code style across the project.  
+
+Enhance JavaScript’s dynamic typing with JSDoc or TypeScript for type checking to reduce errors.  
+
+Support accessibility by ensuring all actions are controllable via keyboard and UI elements have sufficient color contrast.
+

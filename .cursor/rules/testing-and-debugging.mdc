@@ -1,0 +1,9 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Write unit tests for critical game logic, such as scoring or game-over conditions, to ensure reliability and catch bugs early.  
+
+Utilize Phaser.js’s debugging tools (e.g., physics visualization) to inspect collisions and other mechanics during development.
+

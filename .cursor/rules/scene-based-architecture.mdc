@@ -1,0 +1,9 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Organize the game using Phaser.js’s scene system to manage distinct states (e.g., StartScene for the start screen, GameScene for active gameplay, GameOverScene for the end state).  
+
+Keep each scene self-contained with its own logic and assets to maintain clarity and simplify state transitions.
+

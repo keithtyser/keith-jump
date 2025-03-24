@@ -1,0 +1,12 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Structure the codebase into multiple files and directories, each handling specific responsibilities (e.g., player.js for player logic, platforms.js for platform generation, ui.js for UI components).  
+
+Avoid creating a single monolithic file to ensure the project remains maintainable and scalable as complexity grows.  
+
+Use ES6 modules (import/export) to manage dependencies between files cleanly and efficiently.
+
+

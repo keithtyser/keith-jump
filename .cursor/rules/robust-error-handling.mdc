@@ -1,0 +1,9 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Use try-catch blocks in critical sections, like the game’s update loop, to prevent crashes and ensure a seamless player experience.  
+
+Preload all assets (e.g., images, sounds) using Phaser.js’s preload method to avoid runtime errors from missing resources.
+

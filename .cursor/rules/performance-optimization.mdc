@@ -1,0 +1,9 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Implement object pooling for frequently created and destroyed objects, such as platforms, to minimize memory usage and improve runtime performance.  
+
+Leverage Phaser.js’s built-in optimizations, such as sprite batching and minimizing draw calls, to ensure smooth gameplay in the browser.
+

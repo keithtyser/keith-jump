@@ -129,6 +129,28 @@ export class GameScene extends Phaser.Scene {
         
         // Initialize game height variable
         this.gameHeight = this.sys.game.config.height;
+        
+        // Initialize score
+        this.score = 0;
+        
+        // Initialize high score from localStorage
+        this.highScore = parseInt(localStorage.getItem('highScore')) || 0;
+        
+        // Create score text display (at top-left corner)
+        this.scoreText = this.add.text(10, 10, 'Score: 0', {
+            fontSize: '20px',
+            fill: '#FFFFFF'
+        });
+        this.scoreText.setScrollFactor(0); // Fix to camera
+        
+        // Create high score text display (at top-right corner)
+        this.highScoreText = this.add.text(gameWidth - 10, 10, `High Score: ${this.highScore}`, {
+            fontSize: '20px',
+            fill: '#FFFFFF',
+            align: 'right'
+        });
+        this.highScoreText.setOrigin(1, 0); // Align right
+        this.highScoreText.setScrollFactor(0); // Fix to camera
     }
     
     // Creates a platform at the specified position with the specified type
@@ -248,15 +270,34 @@ export class GameScene extends Phaser.Scene {
                     platformType = 'breakable';
                 }
                 
-                // Update platform color based on type
+                // Update platform color based on its new type
                 platform.fillColor = this.platformTypes[platformType].color;
                 
-                // Store the platform type for future behavior implementation
+                // Store the platform type
                 platform.platformType = platformType;
                 
                 // Update the highest platform position
                 this.highestPlatformY = Math.min(this.highestPlatformY, newY);
             }
         });
+        
+        // Update score based on player's height
+        // The higher the player goes, the higher the score (divide by 10 to make the score increase more slowly)
+        const newScore = Math.floor(Math.abs(this.player.y) / 10);
+        
+        // Only update if score has increased
+        if (newScore > this.score) {
+            this.score = newScore;
+            this.scoreText.setText(`Score: ${this.score}`);
+            
+            // Update high score if current score is higher
+            if (this.score > this.highScore) {
+                this.highScore = this.score;
+                this.highScoreText.setText(`High Score: ${this.highScore}`);
+                
+                // Save to localStorage
+                localStorage.setItem('highScore', this.highScore.toString());
+            }
+        }
     }
 } 

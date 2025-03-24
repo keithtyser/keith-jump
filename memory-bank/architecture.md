@@ -178,12 +178,30 @@ Phaser's scene system is used to organize the game into distinct states:
 - Translates input events into physics velocities in the game update loop
 - Designed for responsive controls that feel consistent across devices
 
+### Scoring System
+- Tracks player progress based on vertical height
+- Implements a score calculation algorithm that converts height to points:
+  - Uses Math.floor(Math.abs(player.y) / 10) to create a height-based score
+  - Only increases score when the player reaches new heights (never decreases)
+- Manages score display through fixed-position UI elements:
+  - Places score text in the top-left corner
+  - Places high score text in the top-right corner
+  - Uses setScrollFactor(0) to keep UI elements fixed to the camera view
+- Implements high score functionality:
+  - Retrieves previous high score from localStorage on game start
+  - Updates high score when the current score exceeds it
+  - Automatically saves high score to localStorage when it changes
+- Provides visual feedback on game progress through numeric score
+- Sets up the foundation for game over condition and score reporting
+
 ### Asset Management
 - Preloads all game assets in the appropriate scene preload methods
 - Uses asset directories for organization
 
 ### Storage
 - Uses localStorage for high score persistence between sessions
+- Implements proper data type handling (parsing stored string to integer)
+- Provides fallback default values when stored data is not found
 
 ### Camera System
 - Implements a vertical scrolling camera that follows the player's upward movement

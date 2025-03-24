@@ -21,10 +21,17 @@ export class GameScene extends Phaser.Scene {
         
         // Create 7 platforms at fixed positions with random x-coordinates
         let yPosition = 550; // Start from bottom
+        let firstPlatformY = yPosition; // Store position of first platform
+        let firstPlatformX = 200; // Default center position
         
         for (let i = 0; i < 7; i++) {
             // Random x-coordinate (40 to 360) to stay within screen width
             const xPosition = Phaser.Math.Between(40, 360);
+            
+            // Store the position of the first platform for player positioning
+            if (i === 0) {
+                firstPlatformX = xPosition;
+            }
             
             // Create platform as a rectangle
             const platform = this.add.rectangle(xPosition, yPosition, platformWidth, platformHeight, platformColor);
@@ -58,8 +65,9 @@ export class GameScene extends Phaser.Scene {
         const playerHeight = 70;
         const playerColor = 0x4287f5; // Blue color
         
-        // Add a rectangular sprite for the player at position (200, 550)
-        this.player = this.add.rectangle(200, 550, playerWidth, playerHeight, playerColor);
+        // Position player above the first platform
+        // Add a rectangular sprite for the player
+        this.player = this.add.rectangle(firstPlatformX, firstPlatformY - playerHeight - 5, playerWidth, playerHeight, playerColor);
         
         // Enable Arcade Physics for the player sprite
         this.physics.add.existing(this.player);
@@ -102,6 +110,19 @@ export class GameScene extends Phaser.Scene {
         
         // Add a physics collider between player and platforms
         this.physics.add.collider(this.player, this.platforms, this.handlePlatformCollision, this.checkPlatformCollision, this);
+        
+        // Configure camera to follow player
+        const gameWidth = this.sys.game.config.width;
+        
+        // Set camera bounds to allow only vertical scrolling (fixed horizontal position)
+        this.cameras.main.setBounds(0, -Infinity, gameWidth, Infinity);
+        
+        // Set camera to follow player with smoothing (lerp)
+        this.cameras.main.startFollow(this.player, true, 0, 0.1);
+        
+        // Set the deadzone - an area where the camera won't scroll
+        // This keeps the player within view but not necessarily centered
+        this.cameras.main.setDeadzone(gameWidth, 200);
     }
     
     // Check if the player should collide with the platform (one-way collision)

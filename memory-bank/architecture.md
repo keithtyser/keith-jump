@@ -185,4 +185,21 @@ Phaser's scene system is used to organize the game into distinct states:
 ### Storage
 - Uses localStorage for high score persistence between sessions
 
+### Camera System
+- Implements a vertical scrolling camera that follows the player's upward movement
+- Uses Phaser's camera system with custom configuration:
+  - Bounds set to allow infinite vertical scrolling (y: -Infinity, height: Infinity)
+  - Fixed horizontal position (x: 0, width: game width)
+  - Smooth following with interpolation (lerp) values:
+    - Horizontal lerp of 0 to maintain fixed x-position
+    - Vertical lerp of 0.1 for smooth vertical tracking
+  - Deadzone configuration (width: game width, height: 200) to:
+    - Prevent constant camera movement with small player movements
+    - Create a natural viewing area around the player
+    - Ensure the player remains visible without always being centered
+- Optimized for vertical platforming gameplay in the style of Doodle Jump
+- Designed to work seamlessly with the infinite vertical level generation
+- Maintains proper camera position during player wrap-around
+- Ensures smooth visual experience as the player jumps higher in the game
+
 This architecture follows a modular approach, separating concerns to maintain code readability and scalability in accordance with the defined code quality rules.

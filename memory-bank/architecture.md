@@ -89,6 +89,22 @@ Phaser's scene system is used to organize the game into distinct states:
    - Shows game over message and final score
    - Displays and updates high score
    - Provides restart button to begin a new game
+   - Implements data receiving from GameScene:
+     - Uses Phaser's scene.init method to receive game state data
+     - Receives score and high score from the GameScene
+   - Maintains visual consistency with the main game
+   - Creates a user-friendly game over experience:
+     - Provides clear feedback about the game result
+     - Shows both current score and high score for player assessment
+     - Offers an easy method to restart gameplay
+   - Uses event-based button interaction:
+     - Implements interactive properties for the restart button
+     - Handles pointer events to trigger scene transitions
+     - Prepared for future sound effect implementation
+   - Serves as a buffer between game sessions:
+     - Prevents immediate game restart on failure
+     - Gives players time to reflect on their score
+     - Provides an explicit action (button click) to continue
 
 ## Technical Architecture
 
@@ -247,5 +263,27 @@ Phaser's scene system is used to organize the game into distinct states:
   - Prepares for future movement and behavior implementations
   - Uses color coding to visually distinguish platform types
   - Stores behavior type for future functionality
+
+### Game Over Condition System
+- Implements a boundary-based game over trigger:
+  - Monitors player position relative to the camera view
+  - Triggers when player falls below the bottom of the screen (player.y > camera.scrollY + gameHeight)
+  - Uses the camera's scrollY position to handle the infinite vertical world
+- Manages end-of-game procedures:
+  - Ensures high score persistence through localStorage saving
+  - Prepares for future game over sound effect implementation
+  - Handles clean transition to the GameOverScene
+- Transfers game state data between scenes:
+  - Passes current score and high score to GameOverScene
+  - Uses Phaser's scene.start method with data parameter
+  - Enables the GameOverScene to display relevant information
+- Designed for user experience quality:
+  - Creates a clear distinction between active gameplay and game over state
+  - Provides proper feedback on player failure
+  - Ensures all game progress is saved before transitioning
+- Integrates with the scene management system:
+  - Works with Phaser's scene transition infrastructure
+  - Maintains proper scene lifecycle (shutdown current scene, initialize next scene)
+  - Separates gameplay logic from end-game presentation
 
 This architecture follows a modular approach, separating concerns to maintain code readability and scalability in accordance with the defined code quality rules.

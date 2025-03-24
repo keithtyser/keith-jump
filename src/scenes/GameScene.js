@@ -299,5 +299,17 @@ export class GameScene extends Phaser.Scene {
                 localStorage.setItem('highScore', this.highScore.toString());
             }
         }
+        
+        // Check for game over condition - if player falls below the bottom of the screen
+        if (this.player.y > this.cameras.main.scrollY + this.gameHeight) {
+            // Play game over sound effect (when implemented)
+            // if (this.sfx.gameOver) this.sfx.gameOver.play();
+            
+            // Save the high score to localStorage
+            localStorage.setItem('highScore', this.highScore.toString());
+            
+            // Transition to GameOverScene with score data
+            this.scene.start('GameOverScene', { score: this.score, highScore: this.highScore });
+        }
     }
 } 

@@ -1,5 +1,6 @@
 // Main configuration file for Keith Jump game
 import { GameScene } from './scenes/GameScene.js';
+import { GameOverScene } from './scenes/GameOverScene.js';
 
 // Game configuration
 const config = {
@@ -13,7 +14,7 @@ const config = {
             debug: false
         }
     },
-    scene: [GameScene],
+    scene: [GameScene, GameOverScene],
     scale: {
         mode: Phaser.Scale.FIT,
         parent: 'game',

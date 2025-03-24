@@ -35,8 +35,7 @@ export class GameScene extends Phaser.Scene {
             breakable: {
                 color: 0xF79E50,
                 behavior: 'break-on-jump'
-            },
-            // More platform types can be added here in future steps
+            }
         };
         
         // Create 7 platforms at fixed positions with random x-coordinates
@@ -72,20 +71,19 @@ export class GameScene extends Phaser.Scene {
         const playerColor = 0x4287f5; // Blue color
         
         // Position player above the first platform
-        // Add a rectangular sprite for the player
         this.player = this.add.rectangle(firstPlatformX, firstPlatformY - playerHeight - 5, playerWidth, playerHeight, playerColor);
         
         // Enable Arcade Physics for the player sprite
         this.physics.add.existing(this.player);
         
-        // Set the player's bounce property for the y-axis to 0 (jumping will be handled manually)
+        // Configure player physics body
+        this.player.body.setSize(playerWidth * 0.8, playerHeight); // Slightly smaller collision box
+        this.player.body.setOffset(playerWidth * 0.1, 0); // Center the collision box
         this.player.body.setBounce(0, 0);
+        this.player.body.setCollideWorldBounds(false);
         
-        // Create a sfx object to hold sound effect references for future implementation
-        this.sfx = {
-            // Jump sound will be added in future steps
-            // jump: this.sound.add('jump')
-        };
+        // Create a sfx object to hold sound effect references
+        this.sfx = {};
         
         // Set up keyboard input
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -167,6 +165,11 @@ export class GameScene extends Phaser.Scene {
         // Add the platform to the physics group
         this.platforms.add(platform);
         
+        // Configure platform physics body
+        platform.body.setSize(this.platformWidth, this.platformHeight);
+        platform.body.setOffset(0, 0);
+        platform.body.updateFromGameObject();
+        
         // Store the platform type for future behavior implementation
         platform.platformType = type;
         
@@ -178,17 +181,40 @@ export class GameScene extends Phaser.Scene {
     
     // Check if the player should collide with the platform (one-way collision)
     checkPlatformCollision(player, platform) {
-        // Only allow collision if player is falling down and its bottom is above the platform's top
-        return player.body.velocity.y > 0 && player.body.bottom <= platform.body.top + 5;
+        // Get the exact positions and velocities
+        const playerBottom = player.body.bottom;
+        const platformTop = platform.body.top;
+        const playerVelocityY = player.body.velocity.y;
+        
+        // More lenient collision checks for better gameplay feel
+        const tolerance = 10; // Increased tolerance for better collision detection
+        const minVelocity = 20; // Lower minimum velocity requirement
+        
+        // Basic collision requirements
+        const isFalling = playerVelocityY > minVelocity;
+        const isAbovePlatform = playerBottom <= platformTop + tolerance;
+        
+        // Check horizontal overlap with more precision
+        const playerLeft = player.body.left;
+        const playerRight = player.body.right;
+        const platformLeft = platform.body.left;
+        const platformRight = platform.body.right;
+        
+        // Require at least 30% overlap for collision
+        const overlapThreshold = Math.min(playerRight - platformLeft, platformRight - playerLeft);
+        const playerWidth = player.body.width;
+        const hasSignificantOverlap = overlapThreshold >= (playerWidth * 0.3);
+        
+        return isFalling && isAbovePlatform && hasSignificantOverlap;
     }
     
     // Handle what happens when the player collides with a platform
     handlePlatformCollision(player, platform) {
-        // Set the player's upward velocity for the jump
-        player.body.setVelocityY(-850);
+        // Don't modify player position directly, let physics handle it
+        player.body.setVelocityY(-1200);
         
         // Play the jump sound effect (when implemented)
-        // this.sfx.jump.play();
+        // if (this.sfx.jump) this.sfx.jump.play();
     }
 
     update() {
@@ -261,7 +287,8 @@ export class GameScene extends Phaser.Scene {
                 platform.x = newX;
                 platform.y = newY;
                 
-                // Update the body position (required for physics)
+                // Update the physics body
+                platform.body.reset(newX, newY);
                 platform.body.updateFromGameObject();
                 
                 // Determine platform type for recycled platform (mostly standard for now)

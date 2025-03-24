@@ -89,14 +89,13 @@ export class GameOverScene extends Phaser.Scene {
         }).setOrigin(0.5);
         
         // Group button and text in a container for easier interaction
-        const buttonContainer = this.add.container(0, 0, [restartButton, restartText]);
+        const buttonContainer = this.add.container(centerX, gameHeight * 0.7, [restartButton, restartText]);
         buttonContainer.setSize(180, 60);
         buttonContainer.setInteractive({ useHandCursor: true });
-        container.add(buttonContainer);
         
         // Main menu button
-        const menuButton = this.add.rectangle(0, gameHeight * 0.8, 180, 60, 0x666666);
-        const menuText = this.add.text(0, gameHeight * 0.8, 'MAIN MENU', {
+        const menuButton = this.add.rectangle(0, 0, 180, 60, 0x666666);
+        const menuText = this.add.text(0, 0, 'MAIN MENU', {
             fontSize: '24px',
             fontFamily: 'Arial, sans-serif',
             fontStyle: 'bold',
@@ -104,10 +103,9 @@ export class GameOverScene extends Phaser.Scene {
         }).setOrigin(0.5);
         
         // Group menu button and text
-        const menuContainer = this.add.container(0, 0, [menuButton, menuText]);
+        const menuContainer = this.add.container(centerX, gameHeight * 0.8, [menuButton, menuText]);
         menuContainer.setSize(180, 60);
         menuContainer.setInteractive({ useHandCursor: true });
-        container.add(menuContainer);
         
         // Add hover effects for buttons
         buttonContainer.on('pointerover', () => {
